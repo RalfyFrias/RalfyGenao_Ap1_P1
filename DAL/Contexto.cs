@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RalfyGenao_Ap1_P1.Models;
 
 namespace RalfyGenao_Ap1_P1.DAL
 {
@@ -6,7 +7,7 @@ namespace RalfyGenao_Ap1_P1.DAL
 	{
 		public Contexto(DbContextOptions<Contexto> options)
 				 : base(options) { }
-		public DbSet<Registro> registros { get; set; }
+		public DbSet<Prestamo> Prestamos { get; set; }
 
 	}
 }
