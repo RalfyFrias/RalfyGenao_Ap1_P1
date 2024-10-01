@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Components\Pages\RegistroPage\Create.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqLite" Version="8.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.8">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -15,8 +19,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <UpToDateCheckInput Remove="Components\Pages\RegistroPage\Create.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Components\Pages\RegistroPage\Create.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Components\Pages\RegistroPage\Create.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Data\" />
-    <Folder Include="Service\" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using RalfyGenao_Ap1_P1.Components;
 using RalfyGenao_Ap1_P1.DAL;
+using RalfyGenao_Ap1_P1.Service;
 
 namespace RalfyGenao_Ap1_P1
 {
@@ -16,9 +17,9 @@ namespace RalfyGenao_Ap1_P1
 
 			var ConStr = builder.Configuration.GetConnectionString("ConStr");
 			builder.Services.AddDbContext<Contexto>(Options => Options.UseSqlite(ConStr));
+            builder.Services.AddScoped<PrestamoServices>();
 
-
-			var app = builder.Build();
+            var app = builder.Build();
 
 			// Configure the HTTP request pipeline.
 			if (!app.Environment.IsDevelopment())
