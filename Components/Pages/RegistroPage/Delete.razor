@@ -10,20 +10,20 @@
             <h5 class="card-header">Eliminar prestamo</h5>
         </div>
         <div class="card-header text-center">
-            <h5 class="card-header">¿Est&aacute;s seguro de que quieres eliminar este prestamo?</h5>
+            <h5 class="card-header">¿Est&aacute;s seguro que deseas eliminar este prestamo?</h5>
         </div>
         <div class="container">
             <div class="card-header">
                 <div class="col md-6">
                     <div class="card-body">
                         <div class="card-header text-center">
-                            <h5 class="card-header">Datos del prestamo:</h5>
+                            <h5 class="card-header">Datos del Prestamo</h5>
                         </div>
                         <ul class="list-unstyled">
-                            <li class="text-center">PrestamoId:<strong>@prestamo.PrestamoId</strong></li>
-                            <li class="text-center">Deudor:<strong>@prestamo.Deudor</strong></li>
-                            <li class="text-center">Concepto:<strong>@prestamo.Concepto</strong></li>
-                            <li class="text-center">Monto:<strong>@prestamo.Monto</strong></li>
+                            <li class="">PrestamoId:<strong>@prestamo.PrestamoId</strong></li>
+                            <li class="">Deudor:<strong>@prestamo.Deudor</strong></li>
+                            <li class="">Concepto:<strong>@prestamo.Concepto</strong></li>
+                            <li class="">Monto:<strong>@prestamo.Monto</strong></li>
                         </ul>
 
                     </div>
@@ -39,7 +39,7 @@
 
     </div>
 
-    @if (Validacion)
+    @if (Creo)
     {
         <div class="alert alert-danger text-center" role="alert">
             El Prestamo se a Eliminado con exito.
@@ -53,7 +53,7 @@
     [Parameter]
     public int PrestamoId { get; set; }
     public Prestamo? prestamo { get; set; } = new Prestamo();
-    private bool Validacion;
+    private bool Creo;
 
     protected override async Task OnInitializedAsync()
     {
@@ -71,7 +71,7 @@
         }
         if (await prestamoService.Eliminar(PrestamoId))
         {
-            Validacion = true;
+            Creo = true;
         }
     }
 
