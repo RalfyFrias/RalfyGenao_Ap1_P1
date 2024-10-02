@@ -1,76 +1,73 @@
 ﻿@page "/Prestamo/Create"
 @rendermode InteractiveServer
-@inject NavigationManager navigationManager
 @inject PrestamoServices prestamoServices
+@inject NavigationManager navigationManager
 
+<PageTitle>Registrar Prestamo</PageTitle>
 
 <EditForm Model="prestamo" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
-    @if (Alerta)
-    {
-        <div class="alert alert-success" role="alert">
-            Se Guardo el prestamo.
-        </div>
-    }
+
     <div class="card-header text-center">
-        <h5 class="card-header ">Registro </h5>
+        <h5 class="card-header">Registrar Prestamo</h5>
     </div>
 
     <div class="card-body">
-        @* PrestamoId *@
-        <div class="row">
-            <div class="col-md-10 mb-5">
-                <label for="PrestamoId" class="form-label"><strong>PrestamoId:</strong></label>
-                <div class="input-group">
-                    <div style="width: 40%; height: 1mm;">
-                        <InputNumber @bind-Value="prestamo.PrestamoId" class="form-control" style="font-size: 0.8rem;" aria-labelledby="botonbuscar" />
-                    </div>
-                </div>
-            </div>
+
+        @*PrestamoId*@
+        <div class="mb-3">
+            <label for="prestamId" class="form-label">PrestamoId:</label>
+            <InputNumber @bind-Value="prestamo.PrestamoId" />
         </div>
 
-        @*  Deudor *@
-        <div class="mb-5">
-            <label for="Deudor" class="form-label"><strong>Deudor:</strong></label>
+        @*Deudor*@
+        <div class="mb-3">
+            <label for="Deudor" class="form-label">Deudor:</label>
             <InputText @bind-Value="prestamo.Deudor" class="form-control" />
-            <ValidationMessage For="@(()=>prestamo.Deudor)" />
+            <ValidationMessage For="@(() => prestamo.Deudor)" />
         </div>
 
-        @*  Concepto *@
-        <div class="mb-5">
-            <label for="Concepto" class="form-label"><strong>Concepto:</strong></label>
-            <InputNumber @bind-Value="prestamo.Concepto" class="form-control" />
-            <ValidationMessage For="@(()=>prestamo.Concepto)" />
+        @*Concepto*@
+        <div class="mb-3">
+            <label for="Concepto" class="form-label">Concepto:</label>
+            <InputText @bind-Value="prestamo.Concepto" class="form-control" />
+            <ValidationMessage For="@(() => prestamo.Concepto)" />
         </div>
-        @*  Monto *@
-        <div class="mb-5">
-            <label for="Monto" class="form-label"><strong>Monto:</strong></label>
+
+        @*Monto*@
+        <div class="mb-3">
+            <label for="Concepto" class="form-label">Monto:</label>
             <InputNumber @bind-Value="prestamo.Monto" class="form-control" />
-            <ValidationMessage For="@(()=>prestamo.Monto)" />
-        </div>
-
-
-        <div class="card-footer aligh; justify-content-center mt-3">
-            <div class="btn-group">
-                <button type="submit" class="btn btn-primary">
-                    <span class="bi bi-floppy mt-3"></span>
-                    Guardar
-                </button>
-                <button type="button" @onclick="Volver" class="btn btn-primary">
-                    <span class="bi bi-arrow-left mt-3"></span>
-                    Volver
-                </button>
-            </div>
+            <ValidationMessage For="@(() => prestamo.Monto)" />
         </div>
     </div>
+
+    <div class="card-footer text-center">
+        <div class="btn-group">
+            <button type="submit" class="btn btn-primary"<span class="bi bi-floppy mt-3"></span>Guardar</button>
+            <a href="/Prestamo/Index" class="btn btn-primary" type="button">
+                <span class="bi bi-arrow-left mt-3"></span> Volver
+            </a>
+        </div>
+    </div>
+
+    @if (Creo)
+    {
+        <div class="alert alert-success text-center" role="alert">
+            El Prestamo se a guardado exitosamente.
+            pulsa el boton volver para retornar a la consulta.
+        </div>
+    }
+
 </EditForm>
 
 @code {
     [Parameter]
     public int PrestamoId { get; set; }
     public Prestamo? prestamo { get; set; } = new Prestamo();
+    private bool Creo;
     private bool existe = false;
-    private bool Alerta;
+
     public async Task Nuevo()
     {
         prestamo = new Prestamo();
@@ -96,7 +93,6 @@
     }
     public async Task Guardar()
     {
-
         if (!await Validar())
         {
             return;
@@ -104,11 +100,9 @@
         var guardado = await prestamoServices.Guardar(prestamo);
         if (guardado)
         {
-            Alerta = true;
+            Nuevo();
+            Creo = true;
         }
     }
-    public async Task Volver()
-    {
-        navigationManager.NavigateTo(" /Prestamo/Index");
-    }
+
 }
