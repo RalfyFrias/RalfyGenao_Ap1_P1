@@ -1,6 +1,113 @@
-﻿@page "/Prestamo/Edit"
-<h3>Edit</h3>
+﻿@page "/Prestamo/Edit/{PrestamoId:int}"
+@rendermode InteractiveServer
+@inject PrestamoServices prestamoServices
+@inject NavigationManager navigationManager
+
+<PageTitle>Registrar Prestamo</PageTitle>
+
+<EditForm Model="prestamo" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+
+    <div class="card-header text-center">
+        <h5 class="card-header">Registrar Prestamo</h5>
+    </div>
+
+    <div class="card-body">
+
+        @*PrestamoId*@
+        <div class="mb-3">
+            <label for="prestamId" class="form-label">PrestamoId:</label>
+            <InputNumber @bind-Value="prestamo.PrestamoId" />
+        </div>
+
+        @*Deudor*@
+        <div class="mb-3">
+            <label for="Deudor" class="form-label">Deudor:</label>
+            <InputText @bind-Value="prestamo.Deudor" class="form-control" />
+            <ValidationMessage For="@(() => prestamo.Deudor)" />
+        </div>
+
+        @*Concepto*@
+        <div class="mb-3">
+            <label for="Concepto" class="form-label">Concepto:</label>
+            <InputText @bind-Value="prestamo.Concepto" class="form-control" />
+            <ValidationMessage For="@(() => prestamo.Concepto)" />
+        </div>
+
+        @*Monto*@
+        <div class="mb-3">
+            <label for="Concepto" class="form-label">Monto:</label>
+            <InputNumber @bind-Value="prestamo.Monto" class="form-control" />
+            <ValidationMessage For="@(() => prestamo.Monto)" />
+        </div>
+    </div>
+
+    <div class="card-footer text-center">
+        <div class="btn-group">
+            <button type="submit" class="btn btn-primary"<span class="bi bi-floppy mt-3"></span>Guardar</button>
+            <a href="/Prestamo/Index" class="btn btn-primary" type="button">
+                <span class="bi bi-arrow-left mt-3"></span> Volver
+            </a>
+        </div>
+    </div>
+
+    @if (Creo)
+    {
+        <div class="alert alert-success text-center" role="alert">
+            El Prestamo se a guardado exitosamente.
+            pulsa el boton volver para retornar a la consulta.
+        </div>
+    }
+
+</EditForm>
 
 @code {
+    [Parameter]
+    public int PrestamoId { get; set; }
+    public Prestamo? prestamo { get; set; } = new Prestamo();
+    private bool Creo;
+    private bool existe = false;
+
+    public async Task Nuevo()
+    {
+        prestamo = new Prestamo();
+        existe = false;
+    }
+    public async Task Buscar()
+    {
+        existe = false;
+        var encontrado = await prestamoServices.Buscar(prestamo.PrestamoId);
+        if (encontrado != null)
+        {
+            prestamo = encontrado;
+        }
+        else
+        {
+            Nuevo();
+        }
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        prestamo = await prestamoServices.Buscar(PrestamoId);
+    }
+
+    public async Task<bool> Validar()
+    {
+        var listaprestamo = await prestamoServices.Listar(p => p.Deudor.ToLower() == prestamo.Deudor.ToLower() && prestamo.PrestamoId != PrestamoId);
+        return listaprestamo.Count == 0;
+    }
+    public async Task Guardar()
+    {
+        if (!await Validar())
+        {
+            return;
+        }
+        var guardado = await prestamoServices.Guardar(prestamo);
+        if (guardado)
+        {
+            Nuevo();
+            Creo = true;
+        }
+    }
 
 }
