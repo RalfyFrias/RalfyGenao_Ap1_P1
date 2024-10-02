@@ -11,7 +11,7 @@ using RalfyGenao_Ap1_P1.DAL;
 namespace RalfyGenao_Ap1_P1.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20241001004531_Inicial")]
+    [Migration("20241002004652_Inicial")]
     partial class Inicial
     {
         /// <inheritdoc />
