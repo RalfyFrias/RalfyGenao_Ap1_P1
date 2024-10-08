@@ -18,6 +18,7 @@ namespace RalfyGenao_Ap1_P1
 			var ConStr = builder.Configuration.GetConnectionString("ConStr");
 			builder.Services.AddDbContext<Contexto>(Options => Options.UseSqlite(ConStr));
             builder.Services.AddScoped<PrestamoServices>();
+            builder.Services.AddScoped<DeudorService>();
 
             var app = builder.Build();
 
