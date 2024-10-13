@@ -2,8 +2,6 @@
 using RalfyGenao_Ap1_P1.DAL;
 using RalfyGenao_Ap1_P1.Models;
 using Microsoft.EntityFrameworkCore;
-using RalfyGenao_Ap1_P1.DAL;
-using RalfyGenao_Ap1_P1.Models;
 using System.Linq.Expressions;
 
 namespace RalfyGenao_Ap1_P1.Services;
@@ -78,7 +76,7 @@ public class CobroService
             .AsNoTracking()
             .FirstOrDefaultAsync(c => c.CobroId == id);
     }
-    public async Task<Prestamos?> ObtenerPrestamoPorDeudorId(int deudorId)
+    public async Task<Prestamos?> RecuperarPrestamoPorDeudorId(int deudorId)
     {
         return await _contexto.Prestamos
         .Where(p => p.DeudorId == deudorId)
