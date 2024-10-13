@@ -7,10 +7,10 @@ namespace RalfyGenao_Ap1_P1.DAL
 	{
 		public Contexto(DbContextOptions<Contexto> options)
 				 : base(options) { }
-		public DbSet<Prestamo> Prestamos { get; set; }
+		public DbSet<Prestamos> Prestamos { get; set; }
         public DbSet<Deudor> Duedor { get; set; }
 
-        public DbSet<Cobro> Cobros { get; set; }
+        public DbSet<Cobros> Cobros { get; set; }
 
     }
 }
