@@ -57,7 +57,7 @@
     <div class="container">
         <div class="card shadow-lg mt-3">
             <div class="card-header text-center">
-                <h5 class="card-header ">Registro CobroDetalle</h5>
+                <h5 class="card-header ">Registro CobrosDetalle</h5>
             </div>
 
             <div class="container">
@@ -221,7 +221,7 @@
         if (selectedDeudorId > 0)
         {
 
-            var prestamo = await cobroService.ObtenerPrestamoPorDeudorId(selectedDeudorId);
+            var prestamo = await cobroService.RecuperarPrestamoPorDeudorId(selectedDeudorId);
             if (prestamo != null)
             {
 
@@ -257,6 +257,6 @@
 
     public async Task Volver()
     {
-        navigationManager.NavigateTo("/Cobros/Index");
+        navigationManager.NavigateTo("/Cobro/Index");
     }
 }
