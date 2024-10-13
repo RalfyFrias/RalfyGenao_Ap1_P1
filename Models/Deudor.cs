@@ -4,7 +4,9 @@ namespace RalfyGenao_Ap1_P1.Models
 {
     public class Deudor
     {
-        public int DeurdorId { get; set; }
-        public string Nombres { get; set; }
+        [Key]
+        public int DeudorId { get; set; }
+        [Required(ErrorMessage = "Intentar Nuevamente el Nombre")]
+        public string? Nombres { get; set; }
     }
 }
