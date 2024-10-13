@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using RalfyGenao_Ap1_P1.Components;
 using RalfyGenao_Ap1_P1.DAL;
 using RalfyGenao_Ap1_P1.Service;
+using RalfyGenao_Ap1_P1.Services;
 
 namespace RalfyGenao_Ap1_P1
 {
@@ -17,8 +18,9 @@ namespace RalfyGenao_Ap1_P1
 
 			var ConStr = builder.Configuration.GetConnectionString("ConStr");
 			builder.Services.AddDbContext<Contexto>(Options => Options.UseSqlite(ConStr));
-            builder.Services.AddScoped<PrestamoServices>();
+            builder.Services.AddScoped<PrestamosServices>();
             builder.Services.AddScoped<DeudorService>();
+            builder.Services.AddScoped<CobroService>();
 
             var app = builder.Build();
 
