@@ -1,79 +1,76 @@
 ﻿@page "/Prestamo/Delete/{PrestamoId:int}"
 @rendermode InteractiveServer
-@inject PrestamoServices prestamoService
-
-<PageTitle>Eliminar Prestamo</PageTitle>
+@inject PrestamosServices prestamosServices
+@inject NavigationManager navigationManager
 
 <div class="container">
-    <div class="row mb-3">
+    <div class="card shadow-lg">
         <div class="card-header text-center">
-            <h5 class="card-header">Eliminar prestamo</h5>
-        </div>
-        <div class="card-header text-center">
-            <h5 class="card-header">¿Est&aacute;s seguro que deseas eliminar este prestamo?</h5>
+            <h5 class="card-header ">Registro Eliminar Prestamo</h5>
         </div>
         <div class="container">
-            <div class="card-header">
-                <div class="col md-6">
+            <div class="row">
+                <div class="col-md-10">
                     <div class="card-body">
-                        <div class="card-header text-center">
-                            <h5 class="card-header">Datos del Prestamo</h5>
-                        </div>
                         <ul class="list-unstyled">
-                            <li class="">PrestamoId:<strong>@prestamo.PrestamoId</strong></li>
-                            <li class="">Deudor:<strong>@prestamo.Deudor</strong></li>
-                            <li class="">Concepto:<strong>@prestamo.Concepto</strong></li>
-                            <li class="">Monto:<strong>@prestamo.Monto</strong></li>
+                            <li><strong>PrestamoId:</strong>@prestamo.PrestamoId</li>
+                            <li><strong>Deudor:</strong>@prestamo.Deudor?.Nombres</li>
+                            <li><strong>Concepto:</strong>@prestamo.Concepto</li>
+                            <li><strong>Monto:</strong>@prestamo.Monto</li>
+                            <li><strong>Balance:</strong>@prestamo.Balance</li>
                         </ul>
-
-                    </div>
-                    <div class="card-body text-center">
-                        <a @onclick="EliminarPrestamo" class="btn btn-primary"><span class="bi bi-trash"></span>Eliminar</a>
-                        <a href="/Prestamo/Index" class="btn btn-primary"><span class="bi bi-arrow-left mt-3"></span>Volver</a>
                     </div>
                 </div>
-
             </div>
-
         </div>
-
     </div>
 
-    @if (Creo)
-    {
-        <div class="alert alert-danger text-center" role="alert">
-            El Prestamo se a Eliminado con exito.
-            pulse el boton volver para retornar a la consulta.
-        </div>
-    }
-
+    <div class="card-footer">
+        <button type="button" @onclick="EliminarPrestamo" class="btn btn-outline-danger">
+            <span class="bi bi-trash mt-3"></span>
+            Eliminar
+        </button>
+        <button type="button" @onclick="Volver" class="btn btn-outline-primary">
+            <span class="bi bi-arrow-left mt-3"></span>
+            Volver
+        </button>
+    </div>
 </div>
+
+@if (Alerta)
+{
+
+    <div class="alert alert-danger" role="alert">
+        se elimino el prestamos.
+    </div>
+}
 
 @code {
     [Parameter]
     public int PrestamoId { get; set; }
-    public Prestamo? prestamo { get; set; } = new Prestamo();
-    private bool Creo;
-
+    public Prestamos? prestamo { get; set; } = new Prestamos();
+    private bool existe = false;
+    private bool Alerta;
     protected override async Task OnInitializedAsync()
     {
-        if (prestamo != null)
+        if (PrestamoId != 0)
         {
-            prestamo = await prestamoService.Buscar(PrestamoId);
+            prestamo = await prestamosServices.Buscar(PrestamoId);
         }
     }
-
     public async Task EliminarPrestamo()
     {
         if (PrestamoId == 0 || prestamo == null)
         {
             return;
         }
-        if (await prestamoService.Eliminar(PrestamoId))
+        if (await prestamosServices.Eliminar(PrestamoId))
         {
-            Creo = true;
+            Alerta = true;
         }
     }
-
-
+    public async Task Volver()
+    {
+        navigationManager.NavigateTo("/Prestamo/Index");
+    }
 }

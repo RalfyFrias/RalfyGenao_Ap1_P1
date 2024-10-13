@@ -1,113 +1,122 @@
 ﻿@page "/Prestamo/Edit/{PrestamoId:int}"
 @rendermode InteractiveServer
-@inject PrestamoServices prestamoServices
+@inject PrestamosServices prestamosServices
 @inject NavigationManager navigationManager
 
-<PageTitle>Registrar Prestamo</PageTitle>
 
 <EditForm Model="prestamo" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
-
     <div class="card-header text-center">
-        <h5 class="card-header">Registrar Prestamo</h5>
+        <h5 class="card-header ">Modificar  Prestamos</h5>
     </div>
+    @if (Alerta)
+    {
+
+        <div class="alert alert-success" role="alert">
+            se guardo el prestamos.
+        </div>
+    }
 
     <div class="card-body">
-
-        @*PrestamoId*@
-        <div class="mb-3">
-            <label for="prestamId" class="form-label">PrestamoId:</label>
-            <InputNumber @bind-Value="prestamo.PrestamoId" />
+        @*  PrestamoId *@
+        <div class="row">
+            <div class="col-md-10 mb-5">
+                <label for="PrestamoId" class="form-label"><strong>PrestamoId:</strong></label>
+                <div class="input-group">
+                    <div style="width: 40%; height: 1mm;">
+                        <InputNumber @bind-Value="prestamo.PrestamoId" class="form-control" style="font-size: 0.8rem;" aria-describedby="botonbuscar" />
+                    </div>
+                </div>
+            </div>
         </div>
 
-        @*Deudor*@
-        <div class="mb-3">
-            <label for="Deudor" class="form-label">Deudor:</label>
-            <InputText @bind-Value="prestamo.Deudor" class="form-control" />
-            <ValidationMessage For="@(() => prestamo.Deudor)" />
+        @* Deudor *@
+        <div class="mb-5">
+            <label><strong>Deudor:</strong></label>
+            <InputSelect @bind-Value="prestamo.DeudorId" class="form-control">
+                <option value="0">Elegir Un Deudor</option>
+                @foreach (var deudor in deudor)
+                {
+                    <option value="@deudor.DeudorId">@deudor.Nombres</option>
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() => prestamo.DeudorId)" />
         </div>
 
-        @*Concepto*@
-        <div class="mb-3">
-            <label for="Concepto" class="form-label">Concepto:</label>
+        @*Concepto *@
+        <div class="mb-5">
+            <label for="Concepto" class="form-label"><strong>Concepto:</strong></label>
             <InputText @bind-Value="prestamo.Concepto" class="form-control" />
             <ValidationMessage For="@(() => prestamo.Concepto)" />
         </div>
-
-        @*Monto*@
-        <div class="mb-3">
-            <label for="Concepto" class="form-label">Monto:</label>
+        @* Monto *@
+        <div class="mb-5">
+            <label for="Monto" class="form-label"><strong>Monto:</strong></label>
             <InputNumber @bind-Value="prestamo.Monto" class="form-control" />
             <ValidationMessage For="@(() => prestamo.Monto)" />
         </div>
-    </div>
-
-    <div class="card-footer text-center">
-        <div class="btn-group">
-            <button type="submit" class="btn btn-primary"<span class="bi bi-floppy mt-3"></span>Guardar</button>
-            <a href="/Prestamo/Index" class="btn btn-primary" type="button">
-                <span class="bi bi-arrow-left mt-3"></span> Volver
-            </a>
+        @*Balance*@
+        <div class="mb-5">
+            <label for="Balance" class="form-label"><strong>Balance:</strong></label>
+            <InputNumber @bind-Value="prestamo.Balance" class="form-control" />
+            <ValidationMessage For="@(() => prestamo.Balance)" />
+        </div>
+        <div class="card-footer aligh; justify-content-center">
+            <div class="btn-group">
+                <button type="submit" class="btn btn-outline-success">
+                    <span class="bi bi-floppy mt-3"></span>
+                    Guardar
+                </button>
+                <button type="button" @onclick="Volver" class="btn btn-outline-primary">
+                    <span class="bi bi-arrow-left mt-3"></span>
+                    Volver
+                </button>
+            </div>
         </div>
     </div>
-
-    @if (Creo)
-    {
-        <div class="alert alert-success text-center" role="alert">
-            El Prestamo se a guardado exitosamente.
-            pulsa el boton volver para retornar a la consulta.
-        </div>
-    }
-
 </EditForm>
-
 @code {
     [Parameter]
     public int PrestamoId { get; set; }
-    public Prestamo? prestamo { get; set; } = new Prestamo();
-    private bool Creo;
+    public Prestamos? prestamo { get; set; } = new Prestamos();
     private bool existe = false;
-
-    public async Task Nuevo()
-    {
-        prestamo = new Prestamo();
-        existe = false;
-    }
-    public async Task Buscar()
-    {
-        existe = false;
-        var encontrado = await prestamoServices.Buscar(prestamo.PrestamoId);
-        if (encontrado != null)
-        {
-            prestamo = encontrado;
-        }
-        else
-        {
-            Nuevo();
-        }
-    }
+    public List<Deudor> deudor { get; set; } = new List<Deudor>();
+    private bool Alerta;
     protected override async Task OnInitializedAsync()
     {
-        prestamo = await prestamoServices.Buscar(PrestamoId);
+        deudor = await prestamosServices.ListarDeudore();
+        if (PrestamoId != 0)
+        {
+            prestamo = await prestamosServices.Buscar(PrestamoId) ?? new Prestamos();
+        }
+    }
+    public async Task Nuevo()
+    {
+        prestamo = new Prestamos();
+        existe = false;
     }
 
     public async Task<bool> Validar()
     {
-        var listaprestamo = await prestamoServices.Listar(p => p.Deudor.ToLower() == prestamo.Deudor.ToLower() && prestamo.PrestamoId != PrestamoId);
-        return listaprestamo.Count == 0;
+        var listaprestamos = await prestamosServices.Listar(p => p.Concepto.ToLower() == prestamo.Concepto.ToLower() && p.PrestamoId != prestamo.PrestamoId);
+        return listaprestamos.Count == 0;
     }
+
     public async Task Guardar()
     {
         if (!await Validar())
         {
             return;
         }
-        var guardado = await prestamoServices.Guardar(prestamo);
-        if (guardado)
+        var guadado = await prestamosServices.Guardar(prestamo);
+        if (guadado)
         {
-            Nuevo();
-            Creo = true;
+            Alerta = true;
         }
     }
 
+    public async Task Volver()
+    {
+        navigationManager.NavigateTo("");
+    }
 }
