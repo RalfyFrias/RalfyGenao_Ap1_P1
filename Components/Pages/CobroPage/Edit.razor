@@ -10,7 +10,7 @@
    
     <div class="container">
         <div class="card shadow-lg mt-3">
-            <div class="card-header text-center">
+            <div class="card-header ">
                 <h5 class="card-header ">Registro Cobros</h5>
             </div>
 
@@ -55,61 +55,67 @@
         </div>
     </div>
 
-    <!-- Tabla de detalles -->
     <div class="container">
         <div class="card shadow-lg mt-3">
-            <div class="card-header text-center">
-                <h5 class="card-header ">Registro CobroDetalle</h5>
+            <div class="card-header ">
+                <h5 class="card-header"> Cobros Detalles</h5>
             </div>
 
             <div class="container">
-                <div class="card-body">
-                    <div class="col-md-10 text-end">
-                        <button type="button" @onclick="AgregarDetalle" class="btn btn-outline-success">
-                            <span class="bi bi-plus mt-3"></span> Agregar
-                        </button>
-                    </div>
-                    @if (Agregar)
-                    {
-
-                        <div class="alert alert-info" role="alert">
-                            se agrego el Cobro Detalles.
+                <div class="container">
+                    <div class="card-body">
+                        <div class="col-md-10 text-end">
                         </div>
-                    }
-                    @if (eliminado)
-                    {
-                        <div class="alert alert-danger" role="alert">
-                            Detalle eliminado correctamente.
+                        @if (Agregar)
+                        {
+                            <div class="alert alert-info" role="alert">
+                                Se agregó el Cobro Detalle.
+                            </div>
+                        }
+                        @if (eliminado)
+                        {
+                            <div class="alert alert-danger" role="alert">
+                                Detalle eliminado correctamente.
+                            </div>
+                        }
+
+                        <!-- DetalleId y CobroId en línea -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="DetalleId" class="form-label"><strong>DetalleId:</strong></label>
+                                <InputNumber @bind-Value="cobroDetalle.DetalleId" class="form-control" style="font-size: 0.8rem;" />
+                            </div>
+                            <div class="col-md-6 d-flex">
+                                <div class="me-2">
+                                    <label for="CobroId" class="form-label"><strong>CobroId:</strong></label>
+                                    <InputNumber @bind-Value="cobroDetalle.CobroId" class="form-control" />
+                                    <ValidationMessage For="@(() => cobroDetalle.CobroId)" />
+                                </div>
+                                <button type="button" @onclick="AgregarDetalle" class="btn btn-outline-success align-self-end">
+                                    <span class="bi bi-plus mt-3"></span> Agregar
+                                </button>
+                            </div>
                         </div>
-                    }
-                    <!-- DetalleId -->
-                    <div class="row">
-                        <div class="col-md-8 mb-5">
-                            <label for="DetalleId " class="form-label"><strong>DetalleId:</strong></label>
-                            <InputNumber @bind-Value="cobroDetalle.DetalleId" class="form-control" style="font-size: 0.8rem;" />
+                    </div>
+                </div>
+            </div>
+                    <!-- PrestamoId y ValorCobrado en línea -->
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="PrestamoId" class="form-label"><strong>PrestamoId:</strong></label>
+                            <InputNumber @bind-Value="cobroDetalle.PrestamoId" class="form-control" />
+                            <ValidationMessage For="@(() => cobroDetalle.PrestamoId)" />
                         </div>
                     </div>
 
-                    <!-- CobroId -->
-                    <div class="mb-5">
-                        <label><strong>CobroId:</strong></label>
-                        <InputNumber @bind-Value="cobroDetalle.CobroId" class="form-control" />
-                        <ValidationMessage For="@(()=>cobroDetalle.CobroId)" />
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="ValorCobrado" class="form-label"><strong>ValorCobrado:</strong></label>
+                            <InputNumber @bind-Value="cobroDetalle.ValorCobrado" class="form-control" />
+                            <ValidationMessage For="@(() => cobroDetalle.ValorCobrado)" />
+                        </div>
                     </div>
 
-                    <!-- PrestamoId -->
-                    <div class="mb-5">
-                        <label><strong>PrestamoId:</strong></label>
-                        <InputNumber @bind-Value="cobroDetalle.PrestamoId" class="form-control" />
-                        <ValidationMessage For="@(()=>cobroDetalle.PrestamoId)" />
-                    </div>
-
-                    <!-- ValorCobrado -->
-                    <div class="mb-5">
-                        <label><strong>ValorCobrado:</strong></label>
-                        <InputNumber @bind-Value="cobroDetalle.ValorCobrado" class="form-control" />
-                        <ValidationMessage For="@(()=>cobroDetalle.ValorCobrado)" />
-                    </div>
 
                     <!-- Tabla de detalles -->
                     <table class="table table-light table-bordered">
@@ -132,7 +138,6 @@
                                     <td>@detalle.ValorCobrado</td>
                                     <td class="text-center">
                                         <a class="btn btn-outline-danger bi bi-trash" @onclick="()=>EliminarDetalle(detalle)"></a>
-                                       
                                     </td>
                                 </tr>
                             }
@@ -140,26 +145,29 @@
                     </table>
                 </div>
             </div>
+ 
+
+    <div class="card-footer text-center">
+        <div class="btn-group">
+            <button type="button" @onclick="Guardar" class="btn btn-outline-primary">
+                <span class="bi bi-plus-circle mt-3"></span> Nuevo
+            </button>
         </div>
+        <button type="submit" class="btn btn-outline-success">
+            <span class="bi bi-floppy mt-3"></span> Guardar
+        </button>
+        <button type="button" @onclick="Volver" class="btn btn-outline-primary">
+            <span class="bi bi-arrow-left mt-3"></span> Volver
+        </button>
     </div>
 
-    <div class="card-footer justify-content-center">
-        <div class="btn-group">
-            <button type="submit" class="btn btn-outline-success">
-                <span class="bi bi-floppy mt-3"></span> Guardar
-            </button>
-            <button type="button" @onclick="Volver" class="btn btn-outline-primary">
-                <span class="bi bi-arrow-left mt-3"></span> Volver
-            </button>
-        </div>
-    </div>
     @if (Alerta)
     {
-
         <div class="alert alert-success" role="alert">
-            se guardo el Cobros.
+            Se guardó el Cobros.
         </div>
     }
+
 </EditForm>
 
 @code {

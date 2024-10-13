@@ -6,35 +6,38 @@
 
 <EditForm Model="cobro" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
-   
-    <div class="container">
+   <div class="container">
         <div class="card shadow-lg mt-3">
-            <div class="card-header text-center">
-                <h5 class="card-header ">Registro Cobros</h5>
+            <div class="card-header ">
+                <h5 class="card-header ">Registro de Cobros</h5>
             </div>
-            
-            <div class="card-body">
-                @* CobroId *@
-                <div class="row">
-                    <div class="col-md-8 mb-5">
+
+            <div class="container px-5">
+                <div class="row mb-5">
+                    <!-- CobroId -->
+                    <div class="col-md-8">
                         <label for="CobroId" class="form-label"><strong>CobroId:</strong></label>
                         <div class="input-group">
-                            <div style="width: 40%; height: 1mm;">
+                            <div style="width: 40%;">
                                 <InputNumber @bind-Value="cobro.CobroId" class="form-control" style="font-size: 0.8rem;" aria-describedby="bottonbuscar" />
                             </div>
                         </div>
                     </div>
                 </div>
-                @* Fecha *@
-                <div class="mb-5">
-                    <label for="Fecha" class="form-label"><strong>Fecha:</strong></label>
-                    <InputDate @bind-Value="cobro.Fecha" class="form-control" />
-                    <ValidationMessage For="@(() => cobro.Fecha)" />
+
+                <!-- Fecha -->
+                <div class="row mb-5">
+                    <div class="col-md-8">
+                        <label for="Fecha" class="form-label"><strong>Fecha:</strong></label>
+                        <InputDate @bind-Value="cobro.Fecha" class="form-control" />
+                        <ValidationMessage For="@(() => cobro.Fecha)" />
+                    </div>
                 </div>
 
-                <div class="mb-3 row">
-                    <div class="col-sm-6">
-                        <label for="Deudor" class="col-form-label">Deudor:</label>
+                <div class="row mb-5">
+                    <!-- Deudor -->
+                    <div class="col-md-6">
+                        <label for="Deudor" class="form-label"><strong>Deudor:</strong></label>
                         <select @onchange="OnDeudorSelected" class="form-control">
                             <option value="0">Seleccione un deudor</option>
                             @foreach (var deudor in deudor)
@@ -44,8 +47,11 @@
                         </select>
                         <ValidationMessage For="@(() => cobro.DeudorId)" />
                     </div>
-                    @* Monto *@
-                    <div class="mb-5">
+                </div>
+
+                <div class="row mb-5">
+                    <!-- Monto -->
+                    <div class="col-md-5">
                         <label for="Monto" class="form-label"><strong>Monto:</strong></label>
                         <InputNumber @bind-Value="cobro.Monto" class="form-control" />
                         <ValidationMessage For="@(() => cobro.Monto)" />
@@ -54,62 +60,57 @@
             </div>
         </div>
     </div>
+
     <div class="container">
         <div class="card shadow-lg mt-3">
-            <div class="card-header text-center">
-                <h5 class="card-header ">Registro CobrosDetalle</h5>
+            <div class="card-header">
+                <h5 class="card-header">Cobros Detalle</h5>
             </div>
 
-            <div class="container">
-                <div class="card-body">
-                    <div class="col-md-10 text-end">
-                        <button type="button" @onclick="AgregarDetalle" class="btn btn-outline-primary">
-                            <span class="bi bi-plus mt-3"></span>
-                            Agregar
-                        </button>
-                    </div>
-                    @if (Agregar)
-                    {
-
-                        <div class="alert alert-info" role="alert">
-                            se agrego el Cobro.
-                        </div>
-                    }
-
-                    @* DetalleId *@
-                    <div class="row">
-                        <div class="col-md-8 mb-5">
-                            <label for="DetalleId" class="form-label"><strong>DetalleId:</strong></label>
-                            <div class="input-group">
-                                <div style="width: 40%; height: 1mm;">
-                                    <InputNumber @bind-Value="cobroDetalle.DetalleId" class="form-control" style="font-size: 0.8rem;" aria-describedby="bottonbuscar" />
-                                </div>
+            <div class="card-body">
+                <div class="row mb-5">
+                    <!-- DetalleId -->
+                    <div class="col-md-6">
+                        <label for="DetalleId" class="form-label"><strong>DetalleId:</strong></label>
+                        <div class="input-group">
+                            <div style="width: 50%; height: 1mm;">
+                                <InputNumber @bind-Value="cobroDetalle.DetalleId" class="form-control" style="font-size: 0.9rem;" aria-describedby="bottonbuscar" />
                             </div>
                         </div>
                     </div>
 
-                    @* CobroId *@
-                    <div class="mb-5">
-                        <label><strong>CobroId:</strong></label>
-                        <InputNumber @bind-Value="cobroDetalle.CobroId" class="form-control" />
+                    <!-- CobroId  -->
+                    <div class="col-md-6">
+                        <label for="CobroId" class="form-label"><strong>CobroId:</strong></label>
+                        <div class="input-group">
+                            <div style="width: 50%; height: 1mm;">
+                                <InputNumber @bind-Value="cobroDetalle.CobroId" class="form-control" style="font-size: 0.9rem;" />
+                            </div>
+                            <button type="button" @onclick="AgregarDetalle" class="btn btn-outline-primary ms-2">
+                                <span class="bi bi-plus"></span> Agregar
+                            </button>
+                        </div>
                         <ValidationMessage For="@(() => cobroDetalle.CobroId)" />
                     </div>
+                </div>
 
-                    @* PrestamoId *@
-                    <div class="mb-5">
-                        <label><strong>PrestamoId:</strong></label>
-                        <InputNumber @bind-Value="cobroDetalle.PrestamoId" class="form-control" />
+                <div class="row mb-5">
+                    <!-- PrestamoId -->
+                    <div class="col-md-12">
+                        <label for="PrestamoId" class="form-label"><strong>PrestamoId:</strong></label>
+                        <InputNumber @bind-Value="cobroDetalle.PrestamoId" class="form-control" style="font-size: 0.9rem;" />
                         <ValidationMessage For="@(() => cobroDetalle.PrestamoId)" />
                     </div>
 
-                    @* ValorCobrado *@
-                    <div class="mb-5">
-                        <label><strong>ValorCobrado:</strong></label>
-                        <InputNumber @bind-Value="cobroDetalle.ValorCobrado" class="form-control" />
+                    <!-- ValorCobrado -->
+                    <div class="col-md-12">
+                        <label for="ValorCobrado" class="form-label"><strong>ValorCobrado:</strong></label>
+                        <InputNumber @bind-Value="cobroDetalle.ValorCobrado" class="form-control" style="font-size: 0.9rem;" />
                         <ValidationMessage For="@(() => cobroDetalle.ValorCobrado)" />
                     </div>
 
-                    <table class="table table-light table-bordered">
+                <div class="table-responsive">
+                    <table class="table table-light table-bordered mt-4">
                         <thead class="table table-striped text-center">
                             <tr>
                                 <th>DetalleId</th>
@@ -129,36 +130,39 @@
                                     <td>@detalle.ValorCobrado</td>
                                     <td class="text-center">
                                         <a class="btn btn-outline-danger bi bi-trash" @onclick="() => EliminarDetalle(detalle)"></a>
-                                       
                                     </td>
                                 </tr>
                             }
                         </tbody>
                     </table>
                 </div>
+
+                @if (Alerta)
+                {
+                    <div class="alert alert-success mt-4" role="alert">
+                        Se guardó el Cobro Detalles.
+                    </div>
+                }
+                    <div class="card-footer text-center">
+                        <div class="btn-group">
+                      
+                            <button type="button" @onclick="Nuevo" class="btn btn-outline-primary">
+                                <span class="bi bi-plus-circle mt-3"></span> Nuevo
+                            </button>
+                        </div>
+                            <button type="submit" class="btn btn-outline-success">
+                                <span class="bi bi-floppy mt-3"></span> Guardar
+                            </button>
+                            <button type="button" @onclick="Volver" class="btn btn-outline-primary">
+                                <span class="bi bi-arrow-left mt-3"></span> Volver
+                            </button>
+
+                </div>
             </div>
         </div>
     </div>
-    @if (Alerta)
-    {
+     </div>
 
-        <div class="alert alert-success" role="alert">
-            se guardo el Cobro Detalles.
-        </div>
-    }
-    <div class="card-footer justify-content-center">
-        <div class="btn-group">
-            <button type="submit" class="btn btn-outline-success">
-                <span class="bi bi-floppy mt-3"></span>
-                Guardar
-            </button>
-
-            <button type="button" @onclick="Volver" class="btn btn-outline-primary">
-                <span class="bi bi-arrow-left mt-3"></span>
-                Volver
-            </button>
-        </div>
-    </div>
 </EditForm>
 
 @code {
