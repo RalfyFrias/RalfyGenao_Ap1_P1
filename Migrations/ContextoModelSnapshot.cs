@@ -39,7 +39,7 @@ namespace RalfyGenao_Ap1_P1.Migrations
 
                     b.HasIndex("PrestamoId");
 
-                    b.ToTable("CobroDetalle");
+                    b.ToTable("cobroDetalle");
                 });
 
             modelBuilder.Entity("RalfyGenao_Ap1_P1.Models.Cobros", b =>
@@ -93,22 +93,22 @@ namespace RalfyGenao_Ap1_P1.Migrations
                         new
                         {
                             DeudorId = 2,
-                            Nombres = "Elian"
+                            Nombres = "Joshua"
                         },
                         new
                         {
                             DeudorId = 3,
-                            Nombres = "Albert"
+                            Nombres = "Juanes"
                         },
                         new
                         {
                             DeudorId = 4,
-                            Nombres = "Reylin"
+                            Nombres = "eddy"
                         },
                         new
                         {
                             DeudorId = 5,
-                            Nombres = "Alfa"
+                            Nombres = "Penda"
                         });
                 });
 

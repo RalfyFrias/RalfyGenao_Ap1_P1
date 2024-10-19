@@ -1,118 +1,69 @@
-﻿
-@page "/Cobro/Index"
+﻿@page "/Cobro/Index"
 @rendermode InteractiveServer
-@inject NavigationManager navigationManager
 @inject CobroService cobroService
+@inject NavigationManager navigationManager
 
-<PageTitle></PageTitle>
+<PageTitle>Consulta Cobros</PageTitle>
+
 <div class="container">
     <div class="card shadow-lg">
-        <div class="card-header ">
-            <h5 class="card-header ">Registro Cobros</h5>
-        </div>
-
-        <div class="card-body">
-            <div class="col-md-15 text-end">
-
-                <div class="row md-3 align-content-center ">
-                    <div class="col-md-3">
-                        <label for="filtro" class="form-label">Filtrar Por:</label>
-                        <select @bind="filtro" class="form-control">
-                            <option value="id">CobroId</option>
-                            <option value="Fecha">Fecha</option> 
-                        </select>
-                    </div>
-
-                    <div class="col-md-5">
-                        <label for="valorfiltro" class="form-label">Busqueda:</label>
-                        <div class="input-group">
-                            <input @bind="valorfiltro" class="form-control" />
-                            <button @onclick="Buscar" class="btn btn-outline-primary" type="button">
-                                <span class="bi bi-search-circle mt-3"></span> Buscar
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <a href="/Cobro/Create" class="btn btn-outline-primary" type="button">
-                    <span class="bi bi-plus-square-fill-nav-menu mt-3"></span> Crear
+        <div class="card-header space-between">
+            <h3 class="card-title">Consulta Cobros</h3>
+            <div class="text-end">
+                <a href="/Cobro/Create" class="btn btn-primary">
+                    <span class="bi bi-plus-square mt-3"></span> Crear
                 </a>
-
-                <table class="table table-light table-bordered">
-                    <thead class="table table-striped text-center ">
-                        <tr>
-                            <th>CobroId</th>
-                            <th>Fecha</th>
-                            <th>DeudorId</th>
-                            <th>Monto</th>
-                            <th>Ver</th>
-                            <th>Editar</th>
-                            <th>Eliminar</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var d in ListaCobros)
-                        {
-                            <tr>
-                                <td class="text-center">@d.CobroId</td>
-                                <td class="text-center">@d.Fecha</td> 
-                                <td class="text-center">@d.Deudor?.Nombres</td>
-                                <td class="text-center">@d.Monto</td>
-
-                                <td class="text-center">
-                                    <a href="/Cobro/Details/@d.CobroId" class="btn btn-outline-primary bi bi-eye"></a>
-                                </td>
-                                <td class="text-center">
-                                    <a href="/Cobro/Edit/@d.CobroId" class="btn btn-outline-primary bi bi-pencil-square"></a>
-                                </td>
-                                <td class="text-center">
-                                    <a href="/Cobro/Delete/@d.CobroId" class="btn btn-outline-danger bi bi-trash"></a>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
             </div>
         </div>
 
+        <div class="card-body">
+
+            <table class="table table-hover">
+                <thead class="table  table-striped text-black text-center">
+                    <tr>
+                        <th>CobroId</th>
+                        <th>Fecha</th>
+                        <th>Deudor</th>
+                        <th>Monto</th>
+                        <th>Ver</th>
+                        <th>Editar</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    @foreach (var cobro in listacobro)
+                    {
+                        <tr>
+                            <td>@cobro.CobroId</td>
+                            <td>@(cobro?.Fecha.HasValue == true ? cobro.Fecha.Value.ToString("dd/MM/yy") : "")</td>
+                            <td>@cobro.Deudor.Nombres</td>
+                            <td>@cobro.Monto</td>
+                            <td>
+                                <a href="/Cobro/Details/@cobro.CobroId" class="btn bi bi-eye"></a>
+                            </td>
+                            <td>
+                                <a href="/Cobro/Edit/@cobro.CobroId" class="btn bi bi-pencil-square"></a>
+                            </td>
+                            <td>
+                                <a href="/Cobro/Delete/@cobro.CobroId" class="btn bi bi-trash"></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer space-between">
+            <p>Total de préstamos: @listacobro.Count</p>
+        </div>
     </div>
 </div>
 
-<div class="card-footer">
-    <p>Total:@ListaCobros.Count</p>
-</div>
-
 @code {
-    public List<Cobros> ListaCobros { get; set; } = new List<Cobros>();
-    public string filtro = "id";
-    public string valorfiltro = "";
+    public Cobros cobro = new Cobros();
+    public List<Cobros> listacobro = new List<Cobros>();
 
     protected override async Task OnInitializedAsync()
     {
-        ListaCobros = await cobroService.Listar(d => true);
+        listacobro = await cobroService.Listar(p => true);
     }
-
-    public async Task Buscar()
-    {
-        if (string.IsNullOrWhiteSpace(valorfiltro))
-        {
-            ListaCobros = await cobroService.Listar(p => true);
-        }
-        else
-        {
-            if (filtro == "id" && int.TryParse(valorfiltro, out int CobroId))
-            {
-                ListaCobros = await cobroService.Listar(d => d.CobroId == CobroId);
-            }
-            else if (filtro == "Fecha" && DateTime.TryParse(valorfiltro, out DateTime Fecha))
-            {
-                ListaCobros = await cobroService.Listar(t => t.Fecha == Fecha);
-            }
-            else
-            {
-                ListaCobros = new List<Cobros>(); 
-            }
-        }
-    }
-
 }

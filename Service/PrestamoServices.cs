@@ -63,6 +63,11 @@ public class PrestamosServices
         .Where(Criterio)
            .ToListAsync();
     }
+    public async Task<List<Prestamos>> CargarPrestamosPorDeudorAsync(int deudorId)
+    {
+        return await _contexto.Prestamos.Where(p => p.DeudorId == deudorId).ToListAsync();
+    }
+
     public async Task<List<Deudor>> ListarDeudore()
     {
         return await _contexto.Deudor

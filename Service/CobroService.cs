@@ -99,6 +99,16 @@ public class CobroService
         .ToListAsync();
     }
 
+    // Método para cargar los préstamos de un deudor específico
+    public async Task<List<Prestamos>> CargarPrestamosPorDeudorAsync(int deudorId)
+    {
+        return await _contexto.Prestamos
+            .Where(p => p.DeudorId == deudorId && p.Balance > 0)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+
     public async Task<List<Deudor>> ObtenerDeudoresConPrestamos()
     {
         var deudoresConPrestamos = _contexto.Prestamos
